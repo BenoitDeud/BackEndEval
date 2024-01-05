@@ -22,6 +22,15 @@ class Telephones
     #[ORM\Column]
     private ?float $prix = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageTel = null;
+
+    #[ORM\Column]
+    private ?int $quantiteTelephone = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,4 +71,41 @@ class Telephones
 
         return $this;
     }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImageTel(): ?string
+    {
+        return $this->imageTel;
+    }
+
+    public function setImageTel(?string $imageTel): static
+    {
+        $this->imageTel = $imageTel;
+
+        return $this;
+    }
+
+    public function getQuantiteTelephone(): ?int
+    {
+        return $this->quantiteTelephone;
+    }
+
+    public function setQuantiteTelephone(int $quantiteTelephone): static
+    {
+        $this->quantiteTelephone = $quantiteTelephone;
+
+        return $this;
+    }
+
 }

@@ -22,6 +22,15 @@ class Montres
     #[ORM\Column]
     private ?float $price = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageMontre = null;
+
+    #[ORM\Column]
+    private ?int $quantiteMontre = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +68,42 @@ class Montres
     public function setPrice(float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getImageMontre(): ?string
+    {
+        return $this->imageMontre;
+    }
+
+    public function setImageMontre(?string $imageMontre): static
+    {
+        $this->imageMontre = $imageMontre;
+
+        return $this;
+    }
+
+    public function getQuantiteMontre(): ?int
+    {
+        return $this->quantiteMontre;
+    }
+
+    public function setQuantiteMontre(int $quantiteMontre): static
+    {
+        $this->quantiteMontre = $quantiteMontre;
 
         return $this;
     }

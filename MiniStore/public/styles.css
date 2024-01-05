@@ -1,0 +1,19 @@
+.form {
+    padding-top: 8%;
+}
+
+.gape {
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.big{
+    font-size: 20px;
+    color: red;
+}
+
+.espace{
+    line-height: 50px;
+    margin-bottom: 1%;
+}

@@ -1019,3 +1019,10 @@ figure.instagram-item img.insta-image {
 .post-navigation:focus svg {
     fill: var(--primary-color);
 }
+
+
+/*Mes modifications*/
+
+.form {
+  padding-top: 8%;
+}
