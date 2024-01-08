@@ -4,78 +4,100 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\UserPasswordType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/user')]
 class UserController extends AbstractController
 {
-    #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    #[Route('/user/edition/{id}', name: 'app_user_edit', methods: ['GET', 'POST'])]
+
+    public function edit(UserRepository $userRepository, int $id, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher, #[Autowire('%photo_dir%')] string $photoDir, ): Response
     {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        $user = $userRepository->findOneBy(["id" => $id]);
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
-    }
+        if ($this->getUser() !== $user) {
+            return $this->redirectToRoute('app_login');
+        }
 
-    #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
-    {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
-    {
         $form = $this->createForm(UserType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            if ($hasher->isPasswordValid($user, $form->getData()->getPlainPassword())) {
+                $user = $form->getData();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+                if ($photo = $form['photo']->getData()) {
+                    $filename = bin2hex(random_bytes(6)) . '.' . $photo->guessExtension();
+                    $photo->move($photoDir, $filename);
+                    $user->setImageUser($filename);
+                }
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash('success', 'Les informations de votre compte ont bien été modifiées');
+
+                return $this->redirectToRoute('app_home');
+            } else {
+                $this->addFlash('warning', 'Le mot de passe est incorrect');
+            }
+
         }
 
         return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    #[Route('/user/edition-mot-de-passe/{id}', name: 'user_edit_password', methods: ['GET', 'POST'])]
+    public function editPassword(UserRepository $userRepository, int $id, Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $hasher): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+        $user = $userRepository->findOneBy(['id' => $id]);
+
+        $form = $this->createForm(UserPasswordType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
+
+                $user->setPassword($hasher->hashPassword($user, $form->getData()['newPassword']));
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash('success', 'Le mot de passe a été modifié.');
+
+                return $this->redirectToRoute('app_home');
+            } else {
+                $this->addFlash('warning', 'Le mot de passe renseigné est incorrect');
+            }
         }
 
-        return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        return $this->render('user/edit_Password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/user/{id}', 'app_user_show')]
+    public function index()
+    {
+        return $this->render('user/profil.html.twig',[
+            'controller_name' => 'UserController',
+        ]);
     }
 }

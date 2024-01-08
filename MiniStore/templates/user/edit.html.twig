@@ -1,14 +1,18 @@
-<!DOCTYPE html>
+{% extends 'base.html.twig' %}
 
-{% block title %}Mini Store - edit user
-{% endblock %}
+{% block title %}Modification de l'utilisateur{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+<div class="containeur form">
+    <h1 class="mt-4 container">Modification de votre profil utilisateur</h1>
+    <div class="container">
+        {% for message in app.flashes('warning') %}
+        <div class="alert alert-warning mt-4">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {{ form(form) }}
+    </div>
+</div>
 
-    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_user_index') }}">back to list</a>
-
-    {{ include('user/_delete_form.html.twig') }}
 {% endblock %}

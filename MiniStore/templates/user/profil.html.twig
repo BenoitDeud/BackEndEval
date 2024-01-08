@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Profil
+{% endblock title %}
+
+{% block body %}
+
+	<div class="container form">
+		<h1 class="mt-4">Profil</h1>
+		<div class="card mb-3">
+			<img src="/uploads/photos/{{ app.user.imageUser }}" class="card-img-top" alt="">
+			<div class="card-body text-center">
+				<h5 class="card-title b">Pseudo :
+					{{ app.user.pseudoUser }}</h5>
+				<p class="card-text b">Nom et Prénom :
+					{{ app.user.nomUser }}
+					{{ app.user.prenomUser }}</p>
+				<p class="card-text b">Adresse mail :
+					{{ app.user.email }}</p>
+				<p class="card-text b">Date de création du compte :
+					{{ app.user.createdAt|date('d/m/y') }}</p>
+				<div>
+					<a href="{{path('app_user_edit',{id : app.user.id})}}" class="card-text a btn btn-danger mt-4">Modifier mes informations</a>
+				</div>
+				<div>
+					<a class="card-text a btn btn-danger mt-4" href="{{path('user_edit_password',{id : app.user.id})}}">Modifier mon mot de passe</a>
+				</div>
+				<div>
+					<a href="{{path('app_logout')}}" class="card-text a btn btn-danger mt-4">Logout</a>
+				</div>
+
+
+			</div>
+		</div>
+	</div>
+{% endblock body %}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Watch list
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="container  form2">Les montres disponibles</h1>
+	<div class="container mt-4 d-flex align-items-center flex-wrap align-content-between gap-3">
+
+		{% for montres in montres %}
+
+			<div class="card mb-3 bg-dark-subtle" style="">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/uploads/photos/{{ montres.imageMontre }}" class="card-img-top" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title b">{{ montres.name }}</h5>
+							<p class="card-text b">Auteur :
+								{{ montres.marque }}</p>
+							<p class="card-text b">Prix de la location :
+								{{ montres.price /100 }}
+								€</p>
+							<p class="card-text b">Si vous souhaitez emprunter un livre de notre bibliothéque ou avoir des informations complémentaires, veuillez cliquer sur le bouton ci-dessous</p>
+							<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{montres.id}}">
+								Plus d'informations
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal{{montres.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">{{montres.name}}</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p class="card-text b">Auteur :
+												{{ montres.marque }}</p>
+											<p class="card-text b">Editeur :
+												{{ montres.description }}</p>
+											<p class="card-text b">Prix de la location :
+												{{ montres.price /100 }}
+												€</p>
+											<p class="card-text b">Genre :
+												{{ montres.quantiteMontre }}
+											</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<button type="button" class="btn btn-danger">Save changes</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{% else %}
+			<p>
+				<td colspan="5">no records found</td>
+			</p>
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

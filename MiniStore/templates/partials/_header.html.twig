@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-<symbol id="search" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32">
-	<title>Search</title>
-	<path fill="currentColor" d="M19 3C13.488 3 9 7.488 9 13c0 2.395.84 4.59 2.25 6.313L3.281 27.28l1.439 1.44l7.968-7.969A9.922 9.922 0 0 0 19 23c5.512 0 10-4.488 10-10S24.512 3 19 3zm0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8s-8-3.57-8-8s3.57-8 8-8z"/>
-</symbol>
+	<symbol id="search" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32">
+		<title>Search</title>
+		<path fill="currentColor" d="M19 3C13.488 3 9 7.488 9 13c0 2.395.84 4.59 2.25 6.313L3.281 27.28l1.439 1.44l7.968-7.969A9.922 9.922 0 0 0 19 23c5.512 0 10-4.488 10-10S24.512 3 19 3zm0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8s-8-3.57-8-8s3.57-8 8-8z"/>
+	</symbol>
 
-<symbol xmlns="http://www.w3.org/2000/svg" id="user" viewbox="0 0 16 16">
-	<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-</symbol>
+	<symbol xmlns="http://www.w3.org/2000/svg" id="user" viewbox="0 0 16 16">
+		<path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+	</symbol>
 
-<symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewbox="0 0 16 16">
-	<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-</symbol>
+	<symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewbox="0 0 16 16">
+		<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+	</symbol>
 </svg>
 
 <header id="header" class="site-header header-scrolled position-fixed text-black bg-light">
@@ -37,29 +37,34 @@
 							<a class="nav-link me-4 active" href="{{path('app_home')}}">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link me-4" href="#company-services">Services</a>
+							<a class="nav-link me-4" href="{{path('app_telephones_index')}}">Products</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link me-4" href="#mobile-products">Products</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link me-4" href="#smart-watches">Watches</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link me-4" href="#yearly-sale">Sale</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link me-4" href="#latest-blog">Blog</a>
+							<a class="nav-link me-4" href="{{path('app_montres_index')}}">Watches</a>
 						</li>
 						<li class="nav-item dropdown">
 							<a class="nav-link me-4 dropdown-toggle link-dark" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Pages</a>
 							<ul class="dropdown-menu">
-								<li>
-									<a href="{{path('app_register')}}" class="dropdown-item">Register</a>
-								</li>
-								<li>
-									<a href="{{path('app_login')}}" class="dropdown-item">Login</a>
-								</li>
+
+								{% if app.user %}
+									<li>
+										<a href="{{path('app_user_show',{id : app.user.id})}}" class="dropdown-item">Profil</a>
+									</li>
+									<li>
+										<a href="{{path('app_user_edit',{id : app.user.id})}}" class="dropdown-item">Modifier mes informations</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="{{path('user_edit_password',{id : app.user.id})}}">Modifier mon mot de passe</a>
+									</li>
+								{% else %}
+									<li>
+										<a href="{{path('app_register')}}" class="dropdown-item">Register</a>
+									</li>
+									<li>
+										<a href="{{path('app_login')}}" class="dropdown-item">Login</a>
+									</li>
+								{% endif %}
+
 							</ul>
 						</li>
 						<li class="nav-item">
@@ -72,13 +77,23 @@
 											</svg>
 										</a>
 									</li>
-									<li class="pe-3">
-										<a href="{{path('app_login')}}">
-											<svg class="user">
-												<use xlink:href="#user"></use>
-											</svg>
-										</a>
-									</li>
+									{% if app.user %}
+										<li class="pe-3">
+											<a href="{{path('app_user_show',{id : app.user.id})}}">
+												<svg class="user">
+													<use xlink:href="#user"></use>
+												</svg>
+											</a>
+										</li>
+									{% else %}
+										<li class="pe-3">
+											<a href="{{path('app_login')}}">
+												<svg class="user">
+													<use xlink:href="#user"></use>
+												</svg>
+											</a>
+										</li>
+									{% endif %}
 									<li>
 										<a href="cart.html">
 											<svg class="cart">
