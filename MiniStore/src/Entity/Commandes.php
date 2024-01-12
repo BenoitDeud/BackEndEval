@@ -25,11 +25,12 @@ class Commandes
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'commandes', targetEntity: DetailsCommandes::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'commandes', targetEntity: DetailsCommandes::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $detailsCommandes;
 
     public function __construct()
     {
+        $this->created_at = new \DateTimeImmutable();
         $this->detailsCommandes = new ArrayCollection();
     }
 

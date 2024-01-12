@@ -1,54 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <main class="container">
-        <section class="row">
-            <div class="col-12 form">
-                <h1>Panier</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            
-                            <th>Produit</th>
-                            <th>Prix</th>
-                            <th>Quantité</th>
-                            <th>Total</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for element in data %}
-                        <tr>
-                            <td><img src="/uploads/photos/{{ element.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;"> {{ element.produits.nom }}</td>
-                            <td>{{ element.produits.prix }} €</td>
-                            <td>{{ element.quantite }}</td>
-                            <td>{{ element.quantite * element.produits.prix }} €</td>
-                            <td>
-                                <a href="{{ path('cart_add', {id: element.produits.id})
-                                }}" class="btn btn-success">+</a>
-                                <a href="{{ path('cart_remove', {id: element.produits.id})
-                                }}" class="btn btn-warning">-</a>
-                                <a href="{{ path('cart_delete', {id: element.produits.id})
-                                }}" class="btn btn-danger">Supprimer</a>
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">Votre panier est vide</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3">Total</td>
-                            <td>{{ total }} €</td>
-                            <td>
-                                <a href="{{ path('cart_empty') }}" class="btn btn-danger">Vider</a>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </section>
-    </main>
+	<main class="container">
+		<section class="row">
+			<div class="col-12 form">
+				<h1>Panier</h1>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Produit</th>
+							<th>Prix</th>
+							<th>Quantité</th>
+							<th>Total</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for element in data %}
+							<tr>
+								<td><img src="/uploads/photos/{{ element.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;">
+									{{ element.produits.nom }}</td>
+								<td>{{ element.produits.prix }}
+									€</td>
+								<td>
+									<form method="post" action="{{ path('cart_update', {'id': element.produits.id}) }}">
+										<select name="quantity" onchange="this.form.submit()">
+											{% for i in 1..element.produits.stock %}
+												<option value="{{ i }}" {% if i == element.quantite %} selected {% endif %}>{{ i }}</option>
+											{% endfor %}
+										</select>
+									</form>
+								</td>
+								<td>{{ element.quantite * element.produits.prix }}
+									€</td>
+								<td>
+									<a href="{{ path('cart_delete', {id: element.produits.id}) }}" class="btn btn-danger">Supprimer</a>
+								</td>
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="5">Votre panier est vide</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="3">Total</td>
+							<td>{{ total }}
+								€</td>
+							<td>
+								<a href="{{ path('cart_empty') }}" class="btn btn-danger">Vider</a>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+				<a href="{{ path('app_orders_add') }}" class="btn btn-success">Commander</a>
+			</div>
+		</section>
+	</main>
 {% endblock %}

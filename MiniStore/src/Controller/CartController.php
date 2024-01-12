@@ -5,8 +5,9 @@ namespace App\Controller;
 
 use App\Entity\Produits;
 use App\Repository\ProduitsRepository;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/cart', name: 'cart_')]
@@ -35,7 +36,7 @@ class CartController extends AbstractController
     }
 
     #[Route('/add/{id}', name: 'add')]
-    public function add(Produits $produits, SessionInterface $session)
+    public function add(Produits $produits, SessionInterface $session, Request $request)
     {
         // On récup l'id du produit
         $id = $produits->getId();
@@ -43,13 +44,16 @@ class CartController extends AbstractController
         //On récup le panier existant
         $panier = $session->get('panier', []);
 
+        // On récupère la quantité choisie par l'utilisateur
+        $quantite = $request->request->get('quantity');
+
         // On ajoute le produit dans le panier si il n'y est pas encore
         // sinon on incrémente qté
 
         if (empty($panier[$id])) {
-            $panier[$id] = 1;
+            $panier[$id] = $quantite;
         } else {
-            $panier[$id]++;
+            $panier[$id] += $quantite;
         }
 
         $session->set('panier', $panier);
@@ -58,8 +62,8 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
-    #[Route('/remove/{id}', name: 'remove')]
-    public function remove(Produits $produits, SessionInterface $session)
+    #[Route('/update/{id}', name: 'update')]
+    public function update(Produits $produits, SessionInterface $session, Request $request)
     {
         // On récup l'id du produit
         $id = $produits->getId();
@@ -67,15 +71,16 @@ class CartController extends AbstractController
         //On récup le panier existant
         $panier = $session->get('panier', []);
 
-        // On retire le produit du panier si il n'y a qu'un exemplaire
-        // sinon on décrémente qté
+        // On récupère la nouvelle quantité choisie par l'utilisateur
+        $quantite = $request->request->get('quantity');
 
-        if (!empty($panier[$id])) {
-            if ($panier[$id] > 1) {
-                $panier[$id]--;
-            } else {
-                unset($panier[$id]);
-            }
+        // On vérifie que la quantité choisie est inférieure ou égale au stock disponible
+        if ($quantite <= $produits->getStock()) {
+            // On met à jour la quantité de l'article dans le panier
+            $panier[$id] = $quantite;
+        } else {
+            // On met la quantité à la valeur du stock disponible
+            $panier[$id] = $produits->getStock();
         }
 
         $session->set('panier', $panier);

@@ -7,41 +7,41 @@
 
 	<h1 class="container  form2">Les Produits disponibles</h1>
 
-<div class="container">
-	<!-- Button trigger modal -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Filtres
-</button>
+	<div
+		class="container">
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			Filtres
+		</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Filtres</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="d-flex justify-content-center">
-		<form action="{{ path('app_produits_index') }}" method="get">
-			<input type="text" name="nom" class="form-control mb-3" placeholder="Nom du produit">
-			<select name="categories" class="form-control mb-3" style="max-width: 650px">
-				<option value="">Toutes les catégories</option>
-				{% for categorie in categories %}
-					<option value="{{ categorie.id }}">{{ categorie }}</option>
-				{% endfor %}
-			</select>
-			<button class="btn btn-outline-secondary me-5 shadow" type="submit">Filtrer</button>
-			<a href="{{ path('app_produits_index') }}" class="btn shadow btn-outline-secondary">Remettre à 0</a>
-		</form>
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Filtres</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="d-flex justify-content-center">
+							<form action="{{ path('app_produits_index') }}" method="get">
+								<input type="text" name="nom" class="form-control mb-3" placeholder="Nom du produit">
+								<select name="categories" class="form-control mb-3" style="max-width: 650px">
+									<option value="">Toutes les catégories</option>
+									{% for categorie in categories %}
+										<option value="{{ categorie.id }}">{{ categorie }}</option>
+									{% endfor %}
+								</select>
+								<button class="btn btn-outline-secondary me-5 shadow" type="submit">Filtrer</button>
+								<a href="{{ path('app_produits_index') }}" class="btn shadow btn-outline-secondary">Remettre à 0</a>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
 
-	
 
 	<div class="container grid gap-5 column-gap-3 mt-4 d-flex flex-wrap">
 
@@ -83,13 +83,12 @@
 											<p class="card-text b">Prix :
 												{{ produits.prix }}
 												€</p>
-											<p class="card-text b">Stock :
-												{{ produits.stock }}
-											</p>
 										</div>
 										<div class="modal-footer">
-											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-											<a href="{{ path('cart_add', {id: produits.id}) }}" class="btn btn-success">Ajouter au panier de yoplait</a>
+											<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
+												<input type="number" name="quantity" min="1" max="{{ produits.stock }}" value="1">
+												<input type="submit" value="Ajouter au panier" class="btn btn-danger">
+											</form>
 										</div>
 									</div>
 								</div>
