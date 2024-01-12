@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -36,7 +38,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $newPassword = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageUser = null;
+    private ?string $imageUser = 'sono2.png';
 
     #[ORM\Column(length: 50)]
     private ?string $nomUser = null;
@@ -53,8 +55,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 12)]
     private ?string $tel = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
+
+    #[ORM\Column(length: 5)]
+    private ?string $codePostal = null;
+
+    #[ORM\Column(length: 150)]
+    private ?string $ville = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commandes::class)]
+    private Collection $commandes;
+
     public function __construct(){
         $this->createdAt = new \DateTimeImmutable();
+        $this->commandes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +231,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setNewPassword($newPassword){
         $this->newPassword = $newPassword;
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?string
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(string $codePostal): static
+    {
+        $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commandes>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commandes $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commandes $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            // set the owning side to null (unless already changed)
+            if ($commande->getUser() === $this) {
+                $commande->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

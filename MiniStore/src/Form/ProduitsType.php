@@ -2,29 +2,35 @@
 
 namespace App\Form;
 
-use App\Entity\Telephones;
+use App\Entity\Categories;
+use App\Entity\Produits;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TelephonesType extends AbstractType
+class ProduitsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('nom')
-            ->add('marque')
-            ->add('prix')
             ->add('description')
-            ->add('imageTel')
-            ->add('quantiteTelephone')
+            ->add('prix')
+            ->add('stock')
+            ->add('created_at')
+            ->add('image')
+            ->add('categories', EntityType::class, [
+                'class' => Categories::class,
+'choice_label' => 'id',
+            ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Telephones::class,
+            'data_class' => Produits::class,
         ]);
     }
 }

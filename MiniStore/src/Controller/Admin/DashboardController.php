@@ -3,8 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
-use App\Entity\Montres;
-use App\Entity\Telephones;
+use App\Entity\Produits;
+use App\Entity\Categories;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -18,7 +18,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
-        $url = $routeBuilder->setController(MontresCrudController::class)->generateUrl();
+        $url = $routeBuilder->setController(ProduitsCrudController::class)->generateUrl();
         return $this->redirect($url);
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
@@ -49,8 +49,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
         yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'app_home');
-        yield MenuItem::linkToCrud('Montres', 'fas fa-map-marker-alt', Montres::class);
-        yield MenuItem::linkToCrud('Telephones', 'fas fa-map-marker-alt', Telephones::class);
+        yield MenuItem::linkToCrud('Catégories', 'fas fa-map-marker-alt', Categories::class);
+        yield MenuItem::linkToCrud('Produits', 'fas fa-map-marker-alt', Produits::class);
         yield MenuItem::linkToCrud('User', 'fas fa-map-marker-alt', User::class);
 
     }

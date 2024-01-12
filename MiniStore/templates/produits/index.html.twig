@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Watch list
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="container  form2">Les Produits disponibles</h1>
+
+<div class="container">
+	<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Filtres
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Filtres</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-center">
+		<form action="{{ path('app_produits_index') }}" method="get">
+			<input type="text" name="nom" class="form-control mb-3" placeholder="Nom du produit">
+			<select name="categories" class="form-control mb-3" style="max-width: 650px">
+				<option value="">Toutes les catégories</option>
+				{% for categorie in categories %}
+					<option value="{{ categorie.id }}">{{ categorie }}</option>
+				{% endfor %}
+			</select>
+			<button class="btn btn-outline-secondary me-5 shadow" type="submit">Filtrer</button>
+			<a href="{{ path('app_produits_index') }}" class="btn shadow btn-outline-secondary">Remettre à 0</a>
+		</form>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+	
+
+	<div class="container grid gap-5 column-gap-3 mt-4 d-flex flex-wrap">
+
+		{% for produits in produits %}
+
+			<div class="card mb-3 shadow p-3 mb-2 bg-body-tertiary rounded" style="max-width: 624px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="/uploads/photos/{{ produits.image }}" class="card-img-top" alt="...">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title b">{{ produits.nom }}</h5>
+							<p class="card-text b">Marque :
+								{{ produits.categories }}</p>
+							<p class="card-text b">Prix :
+								{{ produits.prix }}
+								€</p>
+							<p class="card-text b">En cas d'achat d'un produit de notre boutique, vous disposez d'une garantie* d'un an et vous avez également jusqu'à 14 jours pour nous renvoyer un produit si celui-ci ne vous convient pas.</p>
+							<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{produits.id}}">
+								Plus d'informations
+							</button>
+
+							<!-- Modal -->
+							<div class="modal fade" id="exampleModal{{produits.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-lg">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">{{produits.nom}}</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<p class="card-text b">
+												<img src="/uploads/photos/{{ produits.image }}" class="card-img-top" alt="...">
+												Marque :
+												{{ produits.categories }}</p>
+											<p class="card-text b">Description :
+												{{ produits.description }}</p>
+											<p class="card-text b">Prix :
+												{{ produits.prix }}
+												€</p>
+											<p class="card-text b">Stock :
+												{{ produits.stock }}
+											</p>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+											<a href="{{ path('cart_add', {id: produits.id}) }}" class="btn btn-success">Ajouter au panier de yoplait</a>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		{% else %}
+			<p>
+				<td colspan="5">no records found</td>
+			</p>
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

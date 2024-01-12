@@ -122,6 +122,54 @@ class RegistrationFormType extends AbstractType
             'invalid_message'=>"Les mots de passe correspondent pas"
         ])
 
+        ->add('adresse',TextType::class,[
+            'attr'=> [
+                'class'=> 'form-control',
+                'minLenght'=> '2',
+                'maxLenght'=> '255'
+                ],
+                'label'=> 'Adresse',
+                'label_attr'=> [
+                    'class'=> 'form-label'
+                ],
+                'constraints'=> [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min'=> 2,'max'=> 255]),
+                    ]
+        ])
+
+        ->add('codePostal',TextType::class,[
+            'attr'=> [
+                'class'=> 'form-control',
+                'minLenght'=> '5',
+                'maxLenght'=> '5'
+                ],
+                'label'=> 'Code Postal',
+                'label_attr'=> [
+                    'class'=> 'form-label'
+                ],
+                'constraints'=> [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min'=> 5,'max'=> 5]),
+                    ]
+        ])
+
+        ->add('ville',TextType::class,[
+            'attr'=> [
+                'class'=> 'form-control',
+                'minLenght'=> '2',
+                'maxLenght'=> '150'
+                ],
+                'label'=> 'Ville',
+                'label_attr'=> [
+                    'class'=> 'form-label'
+                ],
+                'constraints'=> [
+                    new Assert\NotBlank(),
+                    new Assert\Length(['min'=> 2,'max'=> 150]),
+                    ]
+        ])
+
         ->add('agreeTerms', CheckboxType::class, [
             'mapped' => false,
             'label'=> 'RGPD ',
