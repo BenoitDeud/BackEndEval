@@ -59,7 +59,7 @@ class CartController extends AbstractController
         $session->set('panier', $panier);
 
         //On redirigige vers la page du panier
-        return $this->redirectToRoute('cart_index');
+        return $this->redirectToRoute('app_produits_index');
     }
 
     #[Route('/update/{id}', name: 'update')]

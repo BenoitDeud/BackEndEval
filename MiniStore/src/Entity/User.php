@@ -68,6 +68,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commandes::class)]
     private Collection $commandes;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresseFav = null;
+
+    #[ORM\Column(length: 5, nullable: true)]
+    private ?string $codeFav = null;
+
+    #[ORM\Column(length: 150, nullable: true)]
+    private ?string $villeFav = null;
+
     public function __construct(){
         $this->createdAt = new \DateTimeImmutable();
         $this->commandes = new ArrayCollection();
@@ -297,6 +306,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $commande->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdresseFav(): ?string
+    {
+        return $this->adresseFav;
+    }
+
+    public function setAdresseFav(?string $adresseFav): static
+    {
+        $this->adresseFav = $adresseFav;
+
+        return $this;
+    }
+
+    public function getCodeFav(): ?string
+    {
+        return $this->codeFav;
+    }
+
+    public function setCodeFav(?string $codeFav): static
+    {
+        $this->codeFav = $codeFav;
+
+        return $this;
+    }
+
+    public function getVilleFav(): ?string
+    {
+        return $this->villeFav;
+    }
+
+    public function setVilleFav(?string $villeFav): static
+    {
+        $this->villeFav = $villeFav;
 
         return $this;
     }

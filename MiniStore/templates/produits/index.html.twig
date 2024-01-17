@@ -5,10 +5,10 @@
 
 {% block body %}
 
-	<h1 class="container  form2">Les Produits disponibles</h1>
-
-	<div
-		class="container">
+    <h1 class="form2 container">Les Produits disponibles</h1>
+    <a href="{{ path('cart_index') }}" class="btn btn-dark container d-flex justify-content-end" style="max-width: 140px">Voir mon panier</a>
+	
+	<div class="container">
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
 			Filtres
@@ -61,9 +61,24 @@
 								{{ produits.prix }}
 								€</p>
 							<p class="card-text b">En cas d'achat d'un produit de notre boutique, vous disposez d'une garantie* d'un an et vous avez également jusqu'à 14 jours pour nous renvoyer un produit si celui-ci ne vous convient pas.</p>
-							<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{produits.id}}">
+							{% if produits.stock == 0 %}
+    							<p class="text-danger">Indisponible</p>
+							{% endif %}
+							
+							<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{produits.id}}">
 								Plus d'informations
 							</button>
+							<div class="d-flex justify-content-end">
+							<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
+    							<select name="quantity">
+       								{% for i in 1..min(produits.stock, 12) %}
+            							<option value="{{ i }}">{{ i }}</option>
+        							{% endfor %}
+    							</select>
+    							<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
+							</form>
+
+							</div>
 
 							<!-- Modal -->
 							<div class="modal fade" id="exampleModal{{produits.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -86,28 +101,46 @@
 										</div>
 										<div class="modal-footer">
 											<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
-												<input type="number" name="quantity" min="1" max="{{ produits.stock }}" value="1">
-												<input type="submit" value="Ajouter au panier" class="btn btn-danger">
+    											<select name="quantity">
+       												{% for i in 1..min(produits.stock, 12) %}
+            											<option value="{{ i }}">{{ i }}</option>
+        											{% endfor %}
+    											</select>
+    											<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
 											</form>
 										</div>
 									</div>
 								</div>
 							</div>
-
 						</div>
-
 					</div>
-
 				</div>
-
 			</div>
-
 		{% else %}
 			<p>
 				<td colspan="5">no records found</td>
 			</p>
 		{% endfor %}
 
-	</div>
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
+  <head>
+    <title>Mondial Relay Parcelshop Picker with Map</title>
+    <!-- JQuery required (>1.6.4) -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    
+    <!-- Leaflet dependency is not required since it is loaded by the plugin -->
+    <script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="//unpkg.com/leaflet/dist/leaflet.css" />
 
+    <!-- JS plugin for the Parcelshop Picker Widget MR using JQuery -->
+    <script src="//widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
+  </head>
+  <body>
+    <!-- HTML Element in which the Parcelshop Picker Widget is loaded -->
+    <div id="Zone_Widget"></div>
+
+    <!-- HTML element to display the parcelshop selected, for demo only. Should use hidden instead. -->
+    <input type="text" id="Target_Widget" />
+  </body>
+</html>
 {% endblock %}

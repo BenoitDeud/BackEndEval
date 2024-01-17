@@ -5,6 +5,11 @@
 		<section class="row">
 			<div class="col-12 form">
 				<h1>Panier</h1>
+				{% for message in app.flashes('error') %}
+    				<div class="alert alert-danger">
+        				{{ message }}
+    				</div>
+		{% endfor %}
 				<table class="table">
 					<thead>
 						<tr>
@@ -24,11 +29,11 @@
 									€</td>
 								<td>
 									<form method="post" action="{{ path('cart_update', {'id': element.produits.id}) }}">
-										<select name="quantity" onchange="this.form.submit()">
-											{% for i in 1..element.produits.stock %}
-												<option value="{{ i }}" {% if i == element.quantite %} selected {% endif %}>{{ i }}</option>
-											{% endfor %}
-										</select>
+    									<select name="quantity" onchange="this.form.submit()">
+        									{% for i in 1..min(element.produits.stock, 12) %}
+            									<option value="{{ i }}" {% if i == element.quantite %} selected {% endif %}>{{ i }}</option>
+        									{% endfor %}
+    									</select>
 									</form>
 								</td>
 								<td>{{ element.quantite * element.produits.prix }}
@@ -54,7 +59,7 @@
 						</tr>
 					</tfoot>
 				</table>
-				<a href="{{ path('app_orders_add') }}" class="btn btn-success">Commander</a>
+				<a href="{{ path('app_orders_checkout') }}" class="btn btn-success">Commander</a>
 			</div>
 		</section>
 	</main>
