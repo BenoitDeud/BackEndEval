@@ -14,7 +14,7 @@
 			{% block title %}Ministore
 			{% endblock %}
 		</title>
-		
+
 		{% block stylesheets %}
 			<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 			<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
@@ -27,14 +27,20 @@
 		{% endblock %}
 
 		{% block javascripts %}
-			{{ importmap() }}
+			{{ encore_entry_script_tags('app') }}
+			<!-- JQuery required (>1.6.4) -->
+			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+			<!-- Leaflet dependency is not required since it is loaded by the plugin -->
+			<script src="//unpkg.com/leaflet/dist/leaflet.js"></script>
+			<!-- JS plugin for the Parcelshop Picker Widget MR using JQuery -->
+			<script src="//widget.mondialrelay.com/parcelshop-picker/jquery.plugin.mondialrelay.parcelshoppicker.min.js"></script>
 			<script src="/js/modernizr.js"></script>
 			<script src="/js/jquery-1.11.0.min.js"></script>
 			<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
 			<script type="text/javascript" src="/js/bootstrap.bundle.min.js"></script>
 			<script type="text/javascript" src="/js/plugins.js"></script>
 			<script type="text/javascript" src="/js/script.js"></script>
-			<script type="text/javascript" src="/js/widget.js"></script>
+			<script src="/js/widget.js"></script>
 		{% endblock %}
 	</head>
 

@@ -45,3 +45,6 @@
     height: 150px;
 }
 
+#deliveryDetailsForm input {
+    border: none;
+}

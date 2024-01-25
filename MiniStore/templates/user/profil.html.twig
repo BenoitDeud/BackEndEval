@@ -19,11 +19,23 @@
 					{{ app.user.email }}</p>
 				<p class="card-text b">Date de création du compte :
 					{{ app.user.createdAt|date('d/m/y') }}</p>
+				<p class="card-text b">Adresse :
+					{{ app.user.adresse }}</p>
+				<p class="card-text b">Code Postal :
+					{{ app.user.codePostal }}</p>
+				<p class="card-text b">Ville :
+					{{ app.user.ville }}</p>
 				<div>
 					<a href="{{path('app_user_edit',{id : app.user.id})}}" class="card-text a btn btn-danger mt-4">Modifier mes informations</a>
 				</div>
 				<div>
 					<a class="card-text a btn btn-danger mt-4" href="{{path('user_edit_password',{id : app.user.id})}}">Modifier mon mot de passe</a>
+				</div>
+				<div>
+					<a href="{{path('app_livraison',{id : app.user.id})}}" class="card-text a btn btn-danger mt-4">Modifier mes adresses</a>
+				</div>
+				<div>
+					<a href="{{path('app_orders_all',{id : app.user.id})}}" class="card-text a btn btn-danger mt-4">Voir mes commandes</a>
 				</div>
 				<div>
 					<a href="{{path('app_logout')}}" class="card-text a btn btn-danger mt-4">Logout</a>

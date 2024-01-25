@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Toutes les commandes
+{% endblock %}
+
+{% block body %}
+	<div class="form container">
+		<h1>Toutes vos commandes</h1>
+
+		{% for orderWithDetails in ordersWithDetails %}
+			<h2>Commande #{{ orderWithDetails.order.id }}</h2>
+
+			<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{orderWithDetails.order.id}}">
+				Plus d'informations sur cette commande.
+			</button>
+
+			<div class="modal fade" id="exampleModal{{orderWithDetails.order.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Référence #{{ orderWithDetails.order.reference }}</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<table class="table table-hover fs-5">
+								<thead>
+									<tr>
+										<th>Produit</th>
+										<th>Quantité</th>
+										<th>Prix</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for detail in orderWithDetails.details %}
+										<tr class="table-dark">
+											<td><img src="/uploads/photos/{{ detail.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;">
+												{{ detail.produits.nom }}</td>
+											<td>{{ detail.quantite }}</td>
+											<td>{{ detail.prix }}€</td>
+										</tr>
+									{% endfor %}
+									<tr>
+										<td colspan="2">Total</td>
+										<td>{{ orderWithDetails.total }}€</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<p>Aucune commande trouvée.</p>
+		{% endfor %}
+	</div>
+{% endblock %}

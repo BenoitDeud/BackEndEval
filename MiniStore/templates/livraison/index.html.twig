@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre mode de livraison
+{% endblock %}
+
+{% block body %}
+	<div class="form container mb-3">
+		<h2>Vos Adresses :</h2>
+		<div class="d-flex justify-content-around mb-3">
+			<div>
+				<h3>Adresse de livraison</h3>
+				<p class="card-text b">Adresse :
+					{{ app.user.adresse }}
+				</p>
+				<p class="card-text b">Code Postal :
+					{{ app.user.codePostal }}
+				</p>
+				<p class="card-text b">Ville :
+					{{ app.user.ville }}
+				</p>
+			</div>
+
+			<div>
+				<h3>Adresse de livraison mise en favorite</h3>
+				<p class="card-text b">Adresse en favoris:
+					{{ app.user.adresseFav }}
+				</p>
+				<p class="card-text b">Code Postal :
+					{{ app.user.codeFav }}
+				</p>
+				<p class="card-text b">Ville :
+					{{ app.user.villeFav }}
+				</p>
+			</div>
+		</div>
+
+		<!-- Button trigger modal -->
+		<button type="button" class="btn btn-dark fs-5 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			Voulez-vous modifier vos adresses ?
+		</button>
+
+		<!-- Modal -->
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="exampleModalLabel">Choisissez une nouvelle adresse</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						{{ form_start(form2) }}
+						{{ form_widget(form2) }}
+
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-dark">Mettre à jour</button>
+						{{ form_end(form2) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

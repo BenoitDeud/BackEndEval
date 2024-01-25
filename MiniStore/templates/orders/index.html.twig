@@ -1,20 +1,112 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OrdersController!{% endblock %}
-
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<main class='form container' data-nom="{{ app.user.nomUser }}" data-prenom="{{ app.user.prenomUser }}" data-adresse="{{ adresseLivraison1 }}" data-code-postal="{{ codePostal }}" data-ville="{{ ville }}">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+		<h1 class="text-center mt-5">Choisissez votre mode de livraison :</h1>
+		<div>
+			<form id="deliveryDetailsForm" class="fs-5" action="{{path('app_orders_summary',{'orderId': commande.id})}}" method="get">
+				<div class="form-group">
+					<label class="col-form-label col-form-label-lg mt-4 text-dark" for="name">Nom :</label>
+					<input type="text" id="name" name="name" class="form-control form-control-lg btn-dark"/>
+				</div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/deudo/Desktop/BackEndEval/MiniStore/src/Controller/OrdersController.php'|file_link(0) }}">src/Controller/OrdersController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/deudo/Desktop/BackEndEval/MiniStore/templates/orders/index.html.twig'|file_link(0) }}">templates/orders/index.html.twig</a></code></li>
-    </ul>
-</div>
+				<div class="form-group">
+					<label class="col-form-label col-form-label-lg mt-4 text-dark" for="adress">Adresse :</label>
+					<input type="text" id="address" name="address" class="form-control form-control-lg btn-dark"/>
+				</div>
+
+				<div class="form-group">
+					<label class="col-form-label col-form-label-lg mt-4 text-dark" for="postalCode">Code Postal :</label>
+					<input type="text" id="postalCode" name="postalCode" class="form-control form-control-lg btn-dark"/>
+				</div>
+
+				<div class="form-group">
+					<label class="col-form-label col-form-label-lg mt-4 text-dark" for="city">Ville :</label>
+					<input type="text" id="city" name="city" class="form-control form-control-lg btn-dark"/>
+				</div>
+
+				<div class="d-flex justify-content-center">
+					<button type="submit" class="btn btn-dark mt-3">Valider</button>
+				</div>
+			</form>
+		</div>
+
+		<form action="{{path('app_orders_summary',{'orderId': commande.id})}}" method="post">
+			<div class="d-flex mt-5 justify-content-evenly">
+				<div class="form-check">
+
+					<input class="form-check-input" type="radio" name="deliveryMode" id="homeDelivery" value="home">
+					<label class="form-check-label fs-5" for="homeDelivery">Livraison à domicile :</label><br>
+					<span class='fs-5'>Adresse :
+						{{ adresseLivraison1 }}
+						<br>
+						Ville et CP:
+						{{adresseLivraison2}}
+						<br>
+						Nom et prenom :
+						{{ app.user.nomUser }}
+						{{ app.user.prenomUser}}</span>
+
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="deliveryMode" id="relayDelivery" value="relay">
+					<label class="form-check-label fs-5" for="relayDelivery">
+						Livraison via Mondial Relay :<br>
+						(Veuillez cliquer sur le bouton avant de choisir l'adresse)
+						<br>
+					</label>
+				</div>
+			</div>
+			<!-- HTML Element in which the Parcelshop Picker Widget is loaded -->
+			<div id="Zone_Widget"></div>
+
+			<div style="padding:8px; overflow:auto;">
+				<div style="display:none ;background:#edffb2; border:solid 1px #a5f913; padding:5px; font-family:verdana; font-size:10px;">
+					<em>Cette zone n'est pas située dans le Widget mais bien dans la page appelante.</em><br/><br/>
+					<div
+						style="display:none; vertical-align:top;">
+						<!-- La balise ayant pour id "TargetDisplay_Widget" a été paramétrée pour reçevoir 
+																																										                                  l'ID du Point Relais sélectionné -->
+						Point Relais Selectionné :
+						<form action="" method="get">
+							<input type="text" id="TargetDisplay_Widget" name="TargetDisplay_Widget"/><br/>
+							<!-- Balise HTML avec id "Target_Widget", paramétrée pour reçevoir l'ID 
+																																																	                                      du Point Relais sélectionné -->
+							Hidden :
+							<input type="text" id="Target_Widget" name="Target_Widget"/><br/>
+							<!--Balise HTML avec id "TargetDisplayInfoPR_Widget" paramétrée pour recevoir 
+																																																	                                      l'adresse du Point Relais sélectionné -->
+							InfosPR :
+							<span id="TargetDisplayInfoPR_Widget"></span>
+						</form>
+					</div>
+					<hr/>
+					<div
+						style="display:none;">
+						<!-- Balises HTML utilisées dans la fonction de CallBack pour reçevoir des données à afficher -->
+						<div style="font-weight:bold;text-decoration:underline;">Callback zone</div><br/>
+						<div>data.ID =
+							<span id="cb_ID"></span>
+						</div>
+						<div>data.Nom =
+							<span id="cb_Nom"></span>
+						</div>
+						<div>data.Adresse =
+							<span id="cb_Adresse"></span>
+						</div>
+						<div>data.CP =
+							<span id="cb_CP"></span>
+						</div>
+						<div>data.Ville =
+							<span id="cb_Ville"></span>
+						</div>
+						<div>data.Pays =
+							<span id="cb_Pays"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</main>
 {% endblock %}
