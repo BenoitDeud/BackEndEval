@@ -4,6 +4,11 @@
 	<main class='form container' data-nom="{{ app.user.nomUser }}" data-prenom="{{ app.user.prenomUser }}" data-adresse="{{ adresseLivraison1 }}" data-code-postal="{{ codePostal }}" data-ville="{{ ville }}">
 
 		<h1 class="text-center mt-5">Choisissez votre mode de livraison :</h1>
+		{% for message in app.flashes('error') %}
+			<div class="alert alert-danger container">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<div>
 			<form id="deliveryDetailsForm" class="fs-5" action="{{path('app_orders_summary',{'orderId': commande.id})}}" method="get">
 				<div class="form-group">
@@ -68,16 +73,16 @@
 					<div
 						style="display:none; vertical-align:top;">
 						<!-- La balise ayant pour id "TargetDisplay_Widget" a été paramétrée pour reçevoir 
-																																																							                                  l'ID du Point Relais sélectionné -->
+																																																													                                  l'ID du Point Relais sélectionné -->
 						Point Relais Selectionné :
 						<form action="" method="get">
 							<input type="text" id="TargetDisplay_Widget" name="TargetDisplay_Widget"/><br/>
 							<!-- Balise HTML avec id "Target_Widget", paramétrée pour reçevoir l'ID 
-																																																																                                      du Point Relais sélectionné -->
+																																																																							                                      du Point Relais sélectionné -->
 							Hidden :
 							<input type="text" id="Target_Widget" name="Target_Widget"/><br/>
 							<!--Balise HTML avec id "TargetDisplayInfoPR_Widget" paramétrée pour recevoir 
-																																																																                                      l'adresse du Point Relais sélectionné -->
+																																																																							                                      l'adresse du Point Relais sélectionné -->
 							InfosPR :
 							<span id="TargetDisplayInfoPR_Widget"></span>
 						</form>

@@ -6,6 +6,7 @@ use App\Entity\Logo;
 use App\Entity\User;
 use App\Entity\Navbar;
 use App\Entity\Produits;
+use App\Entity\Commandes;
 use App\Entity\Categories;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,6 +59,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('User', 'fas fa-map-marker-alt', User::class);
         yield MenuItem::linkToCrud('Logo', 'fas fa-map-marker-alt', Logo::class);
         yield MenuItem::linkToCrud('Navbar', 'fas fa-map-marker-alt', Navbar::class);
+        yield MenuItem::linkToCrud('Commandes', 'fas fa-map-marker-alt', Commandes::class);
 
     }
 }

@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -45,7 +44,6 @@ class OrdersController extends AbstractController
         $commande->setReference(uniqid());
 
         // On parcourt tous les articles dans le panier
-        // On parcourt tous les articles dans le panier
         foreach ($panier as $id => $quantite) {
             // On récupère le produit de la base de données
             $produit = $produitsRepository->find($id);
@@ -73,117 +71,117 @@ class OrdersController extends AbstractController
         return $this->redirectToRoute('app_orders_delivery', ['orderId' => $commande->getId()]);
     }
 
-        
-  #[Route("/order-delivery/{orderId}", name: "delivery")]
-  public function orderSummary($orderId, CommandesRepository $ordersRepository , Request $request, EntityManagerInterface $em)
-  {
-      $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
-      $addresse = $user->getAdresse();
-      $ville = $user->getVille();
-      $codePostal = $user->getCodePostal();
-      $adresseLivraison1 = $addresse;
-      $adresseLivraison2 = $ville . ' ' . $codePostal;
 
-      // Récupérez la commande de la base de données
-      $order = $ordersRepository->find($orderId);
-  
-      if (!$order) {
-          throw $this->createNotFoundException('La commande demandée n\'existe pas.');
-      }
-  
-      // Récupérez les détails de la commande
-      $orderDetails = $order->getDetailsCommandes();
-  
-      // Récupérez l'adresse de livraison de la requête
-      $name = $request->query->get('name');
-      $address = $request->query->get('address');
-      $postalCode = $request->query->get('postalCode');
-      $city = $request->query->get('city');
-      $deliveryAdress = $request->query->get('deliveryAdress');
-      
-      // Enregistrez les modifications dans la base de données
-      if ($name && $address && $postalCode && $city) {
-        $deliveryAdress = $name . ', ' . $address . ', ' . $postalCode . ', ' . $city;
-        $order->setAdresseLivraison($deliveryAdress);
-        $em->persist($order);
-        $em->flush();
-    }
-      
-      // Passez les détails de la commande à la vue
-      return $this->render('orders/index.html.twig', [
-          'commande' => $order,
-          'orderDetails' => $orderDetails,
-          'adresseLivraison1' => $adresseLivraison1,
-          'adresseLivraison2' => $adresseLivraison2,
-          'codePostal' => $codePostal,
-          'ville' => $ville,
-          'deliveryAdress' => $deliveryAdress ?? null
-      ]);
-  }
+    #[Route("/order-delivery/{orderId}", name: "delivery")]
+    public function orderSummary($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em)
+    {
+        $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
+        $addresse = $user->getAdresse();
+        $ville = $user->getVille();
+        $codePostal = $user->getCodePostal();
+        $adresseLivraison1 = $addresse;
+        $adresseLivraison2 = $ville . ' ' . $codePostal;
 
-  #[Route('/order-summary/{orderId}', name: 'summary' , methods: ['GET'])]
-   
-  public function showOrderDetail($orderId , CommandesRepository $ordersRepository , Request $request ,EntityManagerInterface $em): Response
-  {
-    // Récupérez la commande de la base de données
-    $order = $ordersRepository->find($orderId);
+        // Récupérez la commande de la base de données
+        $order = $ordersRepository->find($orderId);
 
-    // Récupérez les détails de la commande
-    $orderDetails = $order->getDetailsCommandes();
+        if (!$order) {
+            throw $this->createNotFoundException('La commande demandée n\'existe pas.');
+        }
 
-    // Récupérez l'adresse de livraison de la requête
-    $name = $request->query->get('name');
-    $address = $request->query->get('address');
-    $postalCode = $request->query->get('postalCode');
-    $city = $request->query->get('city');
-    
-    // Enregistrez les modifications dans la base de données
-    if ($name && $address && $postalCode && $city) {
-      $deliveryAdress = $name . ', ' . $address . ', ' . $postalCode . ', ' . $city;
-      $order->setAdresseLivraison($deliveryAdress);
-      $em->persist($order);
-      $em->flush();
+        // Récupérez les détails de la commande
+        $orderDetails = $order->getDetailsCommandes();
 
+        // Récupérez l'adresse de livraison de la requête
+        $name = $request->query->get('name');
+        $address = $request->query->get('address');
+        $postalCode = $request->query->get('postalCode');
+        $city = $request->query->get('city');
+        $deliveryAdress = $request->query->get('deliveryAdress');
+
+        // Enregistrez les modifications dans la base de données
+        if ($name && $address && $postalCode && $city) {
+            $deliveryAdress = $name . ', ' . $address . ', ' . $postalCode . ', ' . $city;
+            $order->setAdresseLivraison($deliveryAdress);
+            $em->persist($order);
+            $em->flush();
+        }
+
+        // Passez les détails de la commande à la vue
+        return $this->render('orders/index.html.twig', [
+            'commande' => $order,
+            'orderDetails' => $orderDetails,
+            'adresseLivraison1' => $adresseLivraison1,
+            'adresseLivraison2' => $adresseLivraison2,
+            'codePostal' => $codePostal,
+            'ville' => $ville,
+            'deliveryAdress' => $deliveryAdress ?? null
+        ]);
     }
 
-    $total = 0;
-    foreach ($orderDetails as $detail) {
-        $total += $detail->getQuantite() * $detail->getPrix();
+    #[Route('/order-summary/{orderId}', name: 'summary', methods: ['GET'])]
+
+    public function showOrderDetail($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em): Response
+    {
+        // Récupérez la commande de la base de données
+        $order = $ordersRepository->find($orderId);
+
+        // Récupérez les détails de la commande
+        $orderDetails = $order->getDetailsCommandes();
+
+        // Récupérez l'adresse de livraison de la requête
+        $name = $request->query->get('name');
+        $address = $request->query->get('address');
+        $postalCode = $request->query->get('postalCode');
+        $city = $request->query->get('city');
+
+        // Enregistrez les modifications dans la base de données
+        if ($name && $address && $postalCode && $city) {
+            $deliveryAdress = $name . ', ' . $address . ', ' . $postalCode . ', ' . $city;
+            $order->setAdresseLivraison($deliveryAdress);
+            $em->persist($order);
+            $em->flush();
+
+        }
+
+        $total = 0;
+        foreach ($orderDetails as $detail) {
+            $total += $detail->getQuantite() * $detail->getPrix();
+        }
+
+        // Renvoyer la vue du récapitulatif de commande avec les informations de la commande
+        return $this->render('orders/resume.html.twig', [
+            'order' => $order,
+            'orderDetails' => $orderDetails,
+            'deliveryAdress' => $deliveryAdress ?? null,
+            'total' => $total
+        ]);
     }
 
-    // Renvoyer la vue du récapitulatif de commande avec les informations de la commande
-    return $this->render('orders/resume.html.twig', [
-      'order' => $order,
-      'orderDetails' => $orderDetails,
-      'deliveryAdress' => $deliveryAdress ?? null,
-      'total' => $total
-    ]);
-  }
+    #[Route('/order-all', name: 'all')]
+    public function allOrder(CommandesRepository $commandes): Response
+    {
+        $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
+        $orders = $commandes->findBy(['user' => $user], ['id' => 'DESC']);
 
-  #[Route('/order-all', name: 'all')]
-  public function allOrder(CommandesRepository $commandes): Response
-  {
-      $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
-      $orders = $commandes->findBy(['user' => $user], ['id' => 'DESC']);
-  
-      $commandesDetails = [];
-      foreach ($orders as $order) {
-          $details = $order->getDetailsCommandes(); // Récupère les détails de la commande
-  
-          $total = 0;
-          foreach ($details as $detail) {
-              $total += $detail->getQuantite() * $detail->getPrix();
-          }
-  
-          $commandesDetails[] = [
-              'order' => $order,
-              'details' => $details,
-              'total' => $total
-          ];
-      }
-  
-      return $this->render('orders/order_by_user.html.twig', [
-          'commandesDetails' => $commandesDetails,
-      ]);
-  }
+        $commandesDetails = [];
+        foreach ($orders as $order) {
+            $details = $order->getDetailsCommandes(); // Récupère les détails de la commande
+
+            $total = 0;
+            foreach ($details as $detail) {
+                $total += $detail->getQuantite() * $detail->getPrix();
+            }
+
+            $commandesDetails[] = [
+                'order' => $order,
+                'details' => $details,
+                'total' => $total
+            ];
+        }
+
+        return $this->render('orders/order_by_user.html.twig', [
+            'commandesDetails' => $commandesDetails,
+        ]);
+    }
 }

@@ -89,15 +89,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $tel = null;
 
     #[ORM\Column(length: 255)]
-    
+
     private ?string $adresse = null;
 
     #[ORM\Column(length: 5)]
-    
+
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 150)]
-    
+
     private ?string $ville = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commandes::class)]
@@ -112,9 +112,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 150, nullable: true)]
     private ?string $villeFav = null;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->createdAt = new \DateTimeImmutable();
         $this->commandes = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->nomUser . ' ' . $this->prenomUser;
     }
 
     public function getId(): ?int
@@ -264,17 +270,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plainPassword;
     }
 
-    public function setPlainPassword($plainPassword){
+    public function setPlainPassword($plainPassword)
+    {
         $this->plainPassword = $plainPassword;
 
         return $this;
     }
 
-    public function getNewPassword(){
+    public function getNewPassword()
+    {
         return $this->newPassword;
     }
 
-    public function setNewPassword($newPassword){
+    public function setNewPassword($newPassword)
+    {
         $this->newPassword = $newPassword;
         return $this;
     }

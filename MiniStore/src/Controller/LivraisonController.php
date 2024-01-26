@@ -36,7 +36,7 @@ class LivraisonController extends AbstractController
             $manager->persist($user);
         }
     
-        // Update the user with the new address details
+
         $adresse = $user->getAdresse();
         $codePostal = $user->getCodePostal();
         $ville = $user->getVille();

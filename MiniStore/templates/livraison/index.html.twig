@@ -5,6 +5,11 @@
 
 {% block body %}
 	<div class="form container mb-3">
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success container">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<h2>Vos Adresses :</h2>
 		<div class="d-flex justify-content-around mb-3">
 			<div>
