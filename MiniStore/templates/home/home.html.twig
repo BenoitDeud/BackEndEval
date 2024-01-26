@@ -113,6 +113,11 @@
 					{{ message }}
 				</div>
 			{% endfor %}
+			{% for message in app.flashes('Message') %}
+				<div class="alert alert-success container">
+					{{ message }}
+				</div>
+			{% endfor %}
 			<div class="swiper main-swiper">
 				<div class="swiper-wrapper">
 					<div class="swiper-slide">
