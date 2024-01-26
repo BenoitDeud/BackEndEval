@@ -73,7 +73,7 @@ class OrdersController extends AbstractController
 
 
     #[Route("/order-delivery/{orderId}", name: "delivery")]
-    public function orderSummary($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em)
+    public function commandeResume($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
         $addresse = $user->getAdresse();
@@ -121,7 +121,7 @@ class OrdersController extends AbstractController
 
     #[Route('/order-summary/{orderId}', name: 'summary', methods: ['GET'])]
 
-    public function showOrderDetail($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em): Response
+    public function recap($orderId, CommandesRepository $ordersRepository, Request $request, EntityManagerInterface $em): Response
     {
         // Récupérez la commande de la base de données
         $order = $ordersRepository->find($orderId);
@@ -159,7 +159,7 @@ class OrdersController extends AbstractController
     }
 
     #[Route('/order-all', name: 'all')]
-    public function allOrder(CommandesRepository $commandes): Response
+    public function commandeUser(CommandesRepository $commandes): Response
     {
         $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
         $orders = $commandes->findBy(['user' => $user], ['id' => 'DESC']);

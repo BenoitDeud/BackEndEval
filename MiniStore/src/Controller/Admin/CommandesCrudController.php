@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Commandes;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -27,6 +29,12 @@ class CommandesCrudController extends AbstractCrudController
             TextField::new('reference'),
             TextField::new('adresseLivraison'),
         ];
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->disable(Action::DELETE, Action::DETAIL);
     }
     
 }
