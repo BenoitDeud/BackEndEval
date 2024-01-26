@@ -4,41 +4,44 @@
 {% endblock %}
 
 {% block body %}
-	<div class="form container">
-		<h1>Récapitulatif de la commande :</h1>
+	
+		<div class="form container">
+			<h1>Récapitulatif de la commande :</h1>
 
-		<h2>Informations de la commande :</h2>
-		<p class="btn-dark">Référence de la commande :
-			{{ order.reference }}</p>
-		<p class="btn-dark">Adresse de livraison :
-			{{ deliveryAdress }}</p>
+			<h2>Informations de la commande :</h2>
+			<p class="btn-dark">Référence de la commande :
+				{{ order.reference }}</p>
+			<p class="btn-dark">Adresse de livraison :
+				{{ deliveryAdress }}</p>
 
-		<h2>Détails de la commande</h2>
-		<table class="table table-hover fs-5">
-			<thead>
-				<tr>
-					<th>Produit</th>
-					<th>Quantité</th>
-					<th>Prix</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for detail in orderDetails %}
-					<tr class="table-dark">
-						<td><img src="/uploads/photos/{{ detail.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;">
-							{{ detail.produits.nom }}</td>
-						<td>{{ detail.quantite }}</td>
-						<td>{{ detail.prix }} €</td>
+			<h2>Détails de la commande</h2>
+			<table class="table table-hover fs-5">
+				<thead>
+					<tr>
+						<th>Produit</th>
+						<th>Quantité</th>
+						<th>Prix</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-			<tfoot>
-				<tr>
-					<td colspan="2">Total</td>
-					<td>{{ total }}
-						€</td>
-				</tr>
-			</tfoot>
-		</table>
-	</div>
+				</thead>
+				<tbody>
+					{% for detail in orderDetails %}
+						<tr class="table-dark">
+							<td><img src="/uploads/photos/{{ detail.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;">
+								{{ detail.produits.nom }}</td>
+							<td>{{ detail.quantite }}</td>
+							<td>{{ detail.prix }}
+								€</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="2">Total</td>
+						<td>{{ total }}
+							€</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
 {% endblock %}

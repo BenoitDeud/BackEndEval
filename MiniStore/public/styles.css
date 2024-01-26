@@ -1,5 +1,5 @@
 .form {
-    padding-top: 8%;
+    padding-top: 13%;
 }
 
 .gape {
@@ -36,8 +36,8 @@
 }
 
 .imageProd{
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
 }
 
 #imageProd{
@@ -47,4 +47,8 @@
 
 #deliveryDetailsForm input {
     border: none;
+}
+
+.forme{
+    padding-top: 6%;
 }

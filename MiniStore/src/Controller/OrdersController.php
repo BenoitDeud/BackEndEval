@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -160,12 +161,12 @@ class OrdersController extends AbstractController
   }
 
   #[Route('/order-all', name: 'all')]
-  public function allOrder(CommandesRepository $ordersRepository): Response
+  public function allOrder(CommandesRepository $commandes): Response
   {
       $user = $this->getUser(); // Récupère l'utilisateur actuellement connecté
-      $orders = $ordersRepository->findBy(['user' => $user], ['id' => 'DESC']);
+      $orders = $commandes->findBy(['user' => $user], ['id' => 'DESC']);
   
-      $ordersWithDetails = [];
+      $commandesDetails = [];
       foreach ($orders as $order) {
           $details = $order->getDetailsCommandes(); // Récupère les détails de la commande
   
@@ -174,7 +175,7 @@ class OrdersController extends AbstractController
               $total += $detail->getQuantite() * $detail->getPrix();
           }
   
-          $ordersWithDetails[] = [
+          $commandesDetails[] = [
               'order' => $order,
               'details' => $details,
               'total' => $total
@@ -182,7 +183,7 @@ class OrdersController extends AbstractController
       }
   
       return $this->render('orders/order_by_user.html.twig', [
-          'ordersWithDetails' => $ordersWithDetails,
+          'commandesDetails' => $commandesDetails,
       ]);
   }
 }

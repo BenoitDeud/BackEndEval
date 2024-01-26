@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/cart', name: 'cart_')]
+
 class CartController extends AbstractController
 {
     #[Route('/', name: 'index')]
@@ -57,6 +58,8 @@ class CartController extends AbstractController
         }
 
         $session->set('panier', $panier);
+
+        $this->addFlash('success', 'Produit ajouté au panier');
 
         //On redirigige vers la page du panier
         return $this->redirectToRoute('app_produits_index');

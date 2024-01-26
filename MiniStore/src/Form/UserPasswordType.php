@@ -40,9 +40,15 @@ class UserPasswordType extends AbstractType
 
             ->add('newPassword', PasswordType::class, [
                 'attr'=>['class'=>'form-control'],
-                'label'=> 'Le nouveau mot de passe',
+                'label'=> 'Nouveau mot de passe, il doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
                 'label_attr'=> ['class'=>'form-label mt-4'],
-                'constraints'=> [new Assert\NotBlank()]
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Regex([
+                        'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                        'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.'
+                    ])
+                    ]
             ])
 
             ->add('submit', SubmitType::class, [

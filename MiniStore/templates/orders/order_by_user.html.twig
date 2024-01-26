@@ -7,18 +7,20 @@
 	<div class="form container">
 		<h1>Toutes vos commandes</h1>
 
-		{% for orderWithDetails in ordersWithDetails %}
-			<h2>Commande #{{ orderWithDetails.order.id }}</h2>
+		{% for commandeDetail in commandesDetails %}
+			<h2>Commande #{{ commandeDetail.order.id }}</h2>
 
-			<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{orderWithDetails.order.id}}">
+			<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{commandeDetail.order.id}}">
 				Plus d'informations sur cette commande.
 			</button>
 
-			<div class="modal fade" id="exampleModal{{orderWithDetails.order.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal fade" id="exampleModal{{commandeDetail.order.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-xl">
 					<div class="modal-content">
 						<div class="modal-header">
-							<h1 class="modal-title fs-5" id="exampleModalLabel">Référence #{{ orderWithDetails.order.reference }}</h1>
+							<h1 class="modal-title fs-5" id="exampleModalLabel">Référence #{{ commandeDetail.order.reference }}<br>
+							Date : {{ commandeDetail.order.createdAt|date('d/m/y') }}<br>
+							Adresse de livraison : {{ commandeDetail.order.adresselivraison }}</h1>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -31,7 +33,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									{% for detail in orderWithDetails.details %}
+									{% for detail in commandeDetail.details %}
 										<tr class="table-dark">
 											<td><img src="/uploads/photos/{{ detail.produits.image }}" class="imageProd" id="imageProd" alt="..." style="max-width: 150px;max-height: 100px;">
 												{{ detail.produits.nom }}</td>
@@ -41,7 +43,7 @@
 									{% endfor %}
 									<tr>
 										<td colspan="2">Total</td>
-										<td>{{ orderWithDetails.total }}€</td>
+										<td>{{ commandeDetail.total }}€</td>
 									</tr>
 								</tbody>
 							</table>

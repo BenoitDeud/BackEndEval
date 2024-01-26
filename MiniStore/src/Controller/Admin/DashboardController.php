@@ -2,19 +2,23 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Logo;
 use App\Entity\User;
+use App\Entity\Navbar;
 use App\Entity\Produits;
 use App\Entity\Categories;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin')]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(): Response
     {
         $routeBuilder = $this->container->get(AdminUrlGenerator::class);
@@ -52,6 +56,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Catégories', 'fas fa-map-marker-alt', Categories::class);
         yield MenuItem::linkToCrud('Produits', 'fas fa-map-marker-alt', Produits::class);
         yield MenuItem::linkToCrud('User', 'fas fa-map-marker-alt', User::class);
+        yield MenuItem::linkToCrud('Logo', 'fas fa-map-marker-alt', Logo::class);
+        yield MenuItem::linkToCrud('Navbar', 'fas fa-map-marker-alt', Navbar::class);
 
     }
 }

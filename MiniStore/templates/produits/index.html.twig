@@ -5,10 +5,17 @@
 
 {% block body %}
 
-    <h1 class="form2 container">Les Produits disponibles</h1>
-    <a href="{{ path('cart_index') }}" class="btn btn-dark container d-flex justify-content-end" style="max-width: 140px">Voir mon panier</a>
-	
-	<div class="container">
+
+	<h1 class="container form">Les Produits disponibles</h1>
+	{% for message in app.flashes('success') %}
+		<div class="alert alert-success container">
+			{{ message }}
+		</div>
+	{% endfor %}
+	<a href="{{ path('cart_index') }}" class="btn btn-dark container d-flex justify-content-end" style="max-width: 140px">Voir mon panier</a>
+
+	<div
+		class="container">
 		<!-- Button trigger modal -->
 		<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
 			Filtres
@@ -55,28 +62,28 @@
 					<div class="col-md-8">
 						<div class="card-body">
 							<h5 class="card-title b">{{ produits.nom }}</h5>
-							<p class="card-text b">Marque :
+							<p class="card-text b">Type de produit :
 								{{ produits.categories }}</p>
 							<p class="card-text b">Prix :
 								{{ produits.prix }}
 								€</p>
 							<p class="card-text b">En cas d'achat d'un produit de notre boutique, vous disposez d'une garantie* d'un an et vous avez également jusqu'à 14 jours pour nous renvoyer un produit si celui-ci ne vous convient pas.</p>
 							{% if produits.stock == 0 %}
-    							<p class="text-danger">Indisponible</p>
+								<p class="text-danger">Indisponible</p>
 							{% endif %}
-							
+
 							<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal{{produits.id}}">
 								Plus d'informations
 							</button>
 							<div class="d-flex justify-content-end">
-							<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
-    							<select name="quantity">
-       								{% for i in 1..min(produits.stock, 12) %}
-            							<option value="{{ i }}">{{ i }}</option>
-        							{% endfor %}
-    							</select>
-    							<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
-							</form>
+								<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
+									<select name="quantity">
+										{% for i in 1..min(produits.stock, 12) %}
+											<option value="{{ i }}">{{ i }}</option>
+										{% endfor %}
+									</select>
+									<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
+								</form>
 
 							</div>
 
@@ -91,7 +98,7 @@
 										<div class="modal-body">
 											<p class="card-text b">
 												<img src="/uploads/photos/{{ produits.image }}" class="card-img-top" alt="...">
-												Marque :
+												Type de produit :
 												{{ produits.categories }}</p>
 											<p class="card-text b">Description :
 												{{ produits.description }}</p>
@@ -101,12 +108,12 @@
 										</div>
 										<div class="modal-footer">
 											<form method="post" action="{{ path('cart_add', {'id': produits.id}) }}">
-    											<select name="quantity">
-       												{% for i in 1..min(produits.stock, 12) %}
-            											<option value="{{ i }}">{{ i }}</option>
-        											{% endfor %}
-    											</select>
-    											<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
+												<select name="quantity">
+													{% for i in 1..min(produits.stock, 12) %}
+														<option value="{{ i }}">{{ i }}</option>
+													{% endfor %}
+												</select>
+												<input type="submit" value="Ajouter au panier" class="btn btn-danger" {{ produits.stock == 0 ? 'disabled' : '' }}>
 											</form>
 										</div>
 									</div>
@@ -121,6 +128,6 @@
 				<td colspan="5">no records found</td>
 			</p>
 		{% endfor %}
+	</div>
 
-	
 {% endblock %}

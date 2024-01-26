@@ -110,7 +110,7 @@ class RegistrationFormType extends AbstractType
                     'attr' => [
                         'class' => 'form-control'
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => 'Mot de passe, il doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).',
                     'label_attr' => [
                         'class' => 'form-label'
                     ],
@@ -118,7 +118,7 @@ class RegistrationFormType extends AbstractType
                         new Assert\NotBlank(),
                         new Assert\Regex([
                             'pattern' => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
-                            'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.'
+                            'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&).'
                         ])
                     ]
                 ],

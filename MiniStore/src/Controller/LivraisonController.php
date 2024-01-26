@@ -8,11 +8,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class LivraisonController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/livraison', name: 'app_livraison')]
     
     public function edit2(Request $request, EntityManagerInterface $manager): Response
@@ -33,17 +35,29 @@ class LivraisonController extends AbstractController
             $user->setVilleFav($user->getVille());
             $manager->persist($user);
         }
-
+    
         // Update the user with the new address details
-        $user->setAdresse($request->get('adresse'));
-        $user->setCodePostal($request->get('codePostal'));
-        $user->setVille($request->get('ville'));
-
+        $adresse = $user->getAdresse();
+        $codePostal = $user->getCodePostal();
+        $ville = $user->getVille();
+    
+        if ($adresse !== null) {
+            $user->setAdresse($adresse);
+        }
+    
+        if ($codePostal !== null) {
+            $user->setCodePostal($codePostal);
+        }
+    
+        if ($ville !== null) {
+            $user->setVille($ville);
+        }
+    
         $manager->persist($user);
         $manager->flush();
-
+    
         $this->addFlash('success', 'Vos informations ont été mises à jour avec succès.');
-
+    
         return $this->redirectToRoute('app_livraison');
     }
 

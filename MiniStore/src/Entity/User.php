@@ -22,6 +22,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank()]
+    #[Assert\Email(
+        message: 'The email {{ value }} is not a valid email.',
+    )]
     private ?string $email = null;
 
     #[ORM\Column]
@@ -42,27 +46,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $imageUser = 'sono2.png';
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your name must be at least {{ limit }} characters long',
+        maxMessage: 'Your name cannot be longer than {{ limit }} characters',
+    )]
     private ?string $nomUser = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your first name must be at least {{ limit }} characters long',
+        maxMessage: 'Your first name cannot be longer than {{ limit }} characters',
+    )]
     private ?string $prenomUser = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Your pseudo must be at least {{ limit }} characters long',
+        maxMessage: 'Your pseudo cannot be longer than {{ limit }} characters',
+    )]
     private ?string $pseudoUser = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 12)]
+    #[Assert\NotBlank()]
+    #[Assert\Length(
+        min: 10,
+        max: 12,
+        minMessage: 'Your telephone must be at least {{ limit }} characters long',
+        maxMessage: 'Your telephone cannot be longer than {{ limit }} characters',
+    )]
     private ?string $tel = null;
 
     #[ORM\Column(length: 255)]
+    
     private ?string $adresse = null;
 
     #[ORM\Column(length: 5)]
+    
     private ?string $codePostal = null;
 
     #[ORM\Column(length: 150)]
+    
     private ?string $ville = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Commandes::class)]
